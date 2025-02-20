@@ -23,16 +23,16 @@ def fibonaci_1 (n):
 
 def fibonaci_2 (n):
   if n <= 0:
-        return None  
+    return None  
   elem = [1, 1]  
   for i in range(2, n): 
-      elem.append(elem[i-1] + elem[i-2])
-  return elem[n-1]
+    elem.append(elem[i-1] + elem[i-2])
+  return elem[-1]
 
 def fibonaci_3(n, a=1, b=1):
-    if n == 0:
-        return a
-    return fibonaci_3(n - 1, b, a + b)
+  if n == 0:
+    return a
+  return fibonaci_3(n - 1, b, a + b)
 
 def fibonaci_4 (n):
   a = (1 + (5**0.5))/2
@@ -67,30 +67,30 @@ def multiply(mat1, mat2):
 
 def matrix_power(mat1, n):
   
-    if n == 0 or n == 1:
-        return
+  if n == 0 or n == 1:
+    return
 
-    mat2 = [[1, 1], [1, 0]]
+  mat2 = [[1, 1], [1, 0]]
 
-    matrix_power(mat1, n // 2)
+  matrix_power(mat1, n // 2)
 
-    multiply(mat1, mat1)
+  multiply(mat1, mat1)
 
-    if n % 2 != 0:
-        multiply(mat1, mat2)
+  if n % 2 != 0:
+    multiply(mat1, mat2)
 
 def fibonaci_6(n):
-    if n <= 1:
-        return n
+  if n <= 1:
+    return n
 
-    mat1 = [[1, 1], [1, 0]]
+  mat1 = [[1, 1], [1, 0]]
 
-    matrix_power(mat1, n - 1)
+  matrix_power(mat1, n - 1)
 
-    return mat1[0][0]
+  return mat1[0][0]
 
 
-fib_func = fibonaci_6
-n_values = list(range(5, 100, 5))
+fib_func = fibonaci_5
+n_values = list(range(5, 1000, 20))
 
 plotFibPerformance(fib_func, n_values)
