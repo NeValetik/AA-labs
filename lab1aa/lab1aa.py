@@ -1,6 +1,6 @@
-
 import time
 import matplotlib.pyplot as plt
+
 def plotFibPerformance(fibFunc, numList):
   times = []
   for n in numList:
@@ -13,7 +13,6 @@ def plotFibPerformance(fibFunc, numList):
   plt.ylabel("Time (seconds)")
   plt.title(f"Performance of {fibFunc.__name__}")
   plt.grid(True)
-  # return plt.gcf()
   plt.show()
 
 def fibonaci_1 (n):
