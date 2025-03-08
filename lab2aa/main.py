@@ -48,14 +48,13 @@ plt.legend()
 plt.grid()
 plt.show()
 
-for content_type in datasets["XS"]:  # Loop through each content type in XS (same logic applies for "S" or "M")
-    plt.figure(figsize=(10, 5))  # Create a new figure for each content type
+for content_type in datasets["XS"]:
+    plt.figure(figsize=(10, 5))  
     for name in results.keys():
-        times = []  # List to store execution times for each size for the current algorithm
+        times = []
 
         for size in sizes:
             arr = datasets[size][content_type]
-            # Measure execution time for the current sorting algorithm and add to list
             if name == "Quick Sort":
                 times.append(measure_execution_time(lambda arr: quick_sort(arr, 0, len(arr) - 1), arr))
             elif name == "Merge Sort":
@@ -68,7 +67,6 @@ for content_type in datasets["XS"]:  # Loop through each content type in XS (sam
         # Plot the execution times for the current algorithm for the current content type
         plt.plot(sizes, times, marker='o', label=name)
     
-    # Set plot labels and title
     plt.xlabel("Array Size")
     plt.ylabel("Execution Time (ms)")
     plt.title(f"Sorting Algorithm Performance for {content_type.capitalize()} Content")

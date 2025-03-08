@@ -25,7 +25,6 @@ def partition(arr, low, high):
     pivot = arr[high]
     i = low - 1
 
-    # Handle duplicates: make sure duplicates stay on the same side of the pivot
     for j in range(low, high):
         if arr[j] <= pivot:
             i += 1
@@ -106,10 +105,8 @@ def counting_sort(arr, exp, is_float=False):
 
     for i in arr:
         if is_float:
-            # For floating-point values, convert to integer by scaling
-            index = int(i * 100) // exp % 10  # Scale to avoid floats in index calculation
+            index = int(i * 100) // exp % 10  
         else:
-            # For integers, simply calculate index normally
             index = (i // exp) % 10
         count[index] += 1
 
@@ -119,7 +116,6 @@ def counting_sort(arr, exp, is_float=False):
     i = n - 1
     while i >= 0:
         if is_float:
-            # For floating-point values, scale back to original position
             index = int(arr[i] * 100) // exp % 10
         else:
             index = (arr[i] // exp) % 10
@@ -131,11 +127,10 @@ def counting_sort(arr, exp, is_float=False):
         arr[i] = output[i]
 
 def radix_sort(arr):
-    # Check if there are any floats or negative numbers
     is_float = any(isinstance(i, float) for i in arr)
-    max_num = max(arr, key=abs)  # Use max by absolute value to handle negative numbers
+    max_num = max(arr, key=abs)  
     exp = 1
-    while max_num // exp > 0 or (is_float and max_num * 100 // exp > 0):  # Scale check for floats
+    while max_num // exp > 0 or (is_float and max_num * 100 // exp > 0): 
         counting_sort(arr, exp, is_float)
         exp *= 10
 
@@ -158,10 +153,10 @@ def partition_visual(arr, low, high):
         if arr[j] <= pivot:
             i += 1
             arr[i], arr[j] = arr[j], arr[i]
-            yield arr.copy()  # Yield array state after swap
+            yield arr.copy()  
 
     arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    yield arr.copy()  # Yield final partitioned state
+    yield arr.copy()  
     return i + 1
 
 
@@ -191,7 +186,7 @@ def merge_in_place_visual(arr, start, mid, end):
             arr[k] = right[j]
             j += 1
         k += 1
-        yield arr.copy()  # Yield after every modification
+        yield arr.copy()  
 
     while i < len(left):
         arr[k] = left[i]
@@ -256,7 +251,7 @@ def counting_sort_visual(arr, exp):
 
     for i in range(n):
         arr[i] = output[i]
-        yield arr.copy()  # Yield intermediate states
+        yield arr.copy()  
 
 
 def radix_sort_visual(arr):
