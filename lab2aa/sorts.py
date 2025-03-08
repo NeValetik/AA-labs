@@ -1,17 +1,31 @@
+import random
+
 def quick_sort(arr, low=0, high=None):
     if high is None:
         high = len(arr) - 1
 
-    if low < high:
-        pivot_index = partition(arr, low, high)
-        quick_sort(arr, low, pivot_index - 1)
-        quick_sort(arr, pivot_index + 1, high)
+    # Switch to insertion sort for small subarrays
+    if high - low <= 20:  # Threshold for insertion sort
+        insertion_sort(arr, low, high)
+    else:
+        while low < high:
+            pivot_index = partition(arr, low, high)
+            # Recursively sort the smaller subarray first
+            if pivot_index - low < high - pivot_index:
+                quick_sort(arr, low, pivot_index - 1)
+                low = pivot_index + 1  # Tail call optimization (simulating it by moving low)
+            else:
+                quick_sort(arr, pivot_index + 1, high)
+                high = pivot_index - 1  # Tail call optimization (simulating it by moving high)
 
 
 def partition(arr, low, high):
+    pivot_index = random.randint(low, high)
+    arr[high], arr[pivot_index] = arr[pivot_index], arr[high]
     pivot = arr[high]
     i = low - 1
 
+    # Handle duplicates: make sure duplicates stay on the same side of the pivot
     for j in range(low, high):
         if arr[j] <= pivot:
             i += 1
@@ -19,6 +33,16 @@ def partition(arr, low, high):
 
     arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
+
+
+def insertion_sort(arr, low, high):
+    for i in range(low + 1, high + 1):
+        key = arr[i]
+        j = i - 1
+        while j >= low and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
 
 
 def merge_sort(arr):
@@ -75,13 +99,18 @@ def heap_sort(arr):
         heapify(arr, i, 0)
 
 
-def counting_sort(arr, exp):
+def counting_sort(arr, exp, is_float=False):
     n = len(arr)
     output = [0] * n
     count = [0] * 10
 
     for i in arr:
-        index = (i // exp) % 10
+        if is_float:
+            # For floating-point values, convert to integer by scaling
+            index = int(i * 100) // exp % 10  # Scale to avoid floats in index calculation
+        else:
+            # For integers, simply calculate index normally
+            index = (i // exp) % 10
         count[index] += 1
 
     for i in range(1, 10):
@@ -89,7 +118,11 @@ def counting_sort(arr, exp):
 
     i = n - 1
     while i >= 0:
-        index = (arr[i] // exp) % 10
+        if is_float:
+            # For floating-point values, scale back to original position
+            index = int(arr[i] * 100) // exp % 10
+        else:
+            index = (arr[i] // exp) % 10
         output[count[index] - 1] = arr[i]
         count[index] -= 1
         i -= 1
@@ -97,12 +130,13 @@ def counting_sort(arr, exp):
     for i in range(n):
         arr[i] = output[i]
 
-
 def radix_sort(arr):
-    max_num = max(arr)
+    # Check if there are any floats or negative numbers
+    is_float = any(isinstance(i, float) for i in arr)
+    max_num = max(arr, key=abs)  # Use max by absolute value to handle negative numbers
     exp = 1
-    while max_num // exp > 0:
-        counting_sort(arr, exp)
+    while max_num // exp > 0 or (is_float and max_num * 100 // exp > 0):  # Scale check for floats
+        counting_sort(arr, exp, is_float)
         exp *= 10
 
 
